@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const PORT = 2100
+const PORT = process.env.PORT || 2100
 const mongoose = require('mongoose')
 const bookRouters = require('./routers/books')
 const customerRouters = require('./routers/customer')
