@@ -17,7 +17,7 @@ const custSchema = new Schema({
     },
     createdBy: {
         type: mongoose.Types.ObjectId,
-        ref: 'User',
+        ref: 'customer',
         required:'true',
     },
 })

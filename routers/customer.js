@@ -3,6 +3,8 @@ const router = express.Router();
 const customer = require("../model/customerModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const BOOKES = require("../model/bookesModel");
+const purchase = require("../model/purchaseModel")
 
 // signUp route
 router.post("/signUp", async (req, res) => {
@@ -100,7 +102,27 @@ router.post("/signIn", async (req, res) => {
 router.post("/signOut", async (req, res) => {
     const token = 'signOut'
     res.status(201).json({message: 'sign out successfull'})
+});
+
+
+// to comment
+router.post("/comment", async (req, res) => {
+  const { comment, bookId } = req.body;
+  try {
+    const newComment = await BOOKES.findByIdAndUpdate(bookId, {
+      $push: { comments: comment },
     });
+    res.status(200).json(newComment);
+    console.log(newComment);
+    console.log(comment);
+    console.log(bookId);
+    } catch (err) {
+      res.status(500).json(err);
+      console.log(err);
+      }
+      });
+
+      
 
 
 module.exports = router;

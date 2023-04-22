@@ -18,14 +18,45 @@ const bookesSchema = new Schema({
         required: true
     },
     genre:{
+        type: [String],
+        required: true
+    },
+    image:{
         type: String,
         required: true
     },
-    imageUrl:{
-        type: String,
-        required: true
+    ratings:{
+        type: Number,
+        default:0,
+        min:0,
+        max: 5,
+    },
+    purchased: {
+        type: Boolean,
+        default: false,
+    }, 
+    bestselling: {
+        type: Boolean,
+        default: false,
+    },
+    bookmarked: {
+        type: Boolean,
+        default: false,
+    },
+    recommended: {
+        type: Boolean,
+        default: false,
     }
 
 })
 const BOOKES = mongoose.model('bookes', bookesSchema)
 module.exports = BOOKES
+
+// sign up
+// login
+// logout
+
+// create a book(admin)
+// get all books
+// *work on bookmarks
+// *
