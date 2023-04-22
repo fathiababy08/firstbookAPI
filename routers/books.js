@@ -56,6 +56,16 @@ router.get("/bookmarked", async (req, res) => {
   }
 });
 
+// to get recommended books
+router.get("/recommended", async (req, res) => {
+  try {
+    const books = await BOOKS.find({'recommended': true});
+    res.status(200).json({ numOfBooks: books.length, books });
+  } catch (err) {
+    res.status(500).json({ message: "error" });
+  }
+});
+
 
 // to create new books
 router.post("/new", async (req, res) => {
@@ -104,17 +114,17 @@ router.post("/new", async (req, res) => {
 //   }
 // });
 
-// // to delete a book
-// router.delete("/delete/:bookId", async (req, res) => {
-//   try {
-//     const deleteBook = await BOOKS.findByIdAndDelete({
-//       _id: req.params.bookId,
-//     });
-//     res.status(200).json({ message: "book deleted" });
-//   } catch (err) {
-//     res.status(500).json({ message: "error" });
-//   }
-// });
+// to delete a book
+router.delete("/delete/:bookId", async (req, res) => {
+  try {
+    const deleteBook = await BOOKS.findByIdAndDelete({
+      _id: req.params.bookId,
+    });
+    res.status(200).json({ message: "book deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "error" });
+  }
+});
 
 // to search a book
 router.get("/search", async (req, res) => {
