@@ -41,11 +41,9 @@ router.post("/signUp", async (req, res) => {
         id: newCustomer._id,
         userName,
         email,
-        role: "user",
       },
       process.env.JWT_SECRET
     );
-    console.log("sign up successfull");
 
     // send the token to the client
     res.status(201).json({ newCustomer, token });
@@ -78,12 +76,11 @@ router.post("/signIn", async (req, res) => {
     const token = jwt.sign(
       {
         id: userNameExist._id,
-        userName,
-        role: "user",
+        userName: userNameExist.userName,
+        email: userNameExist.email,
       },
-      process.env.JWT_SECRET
-    );
-    console.log("sign in successfull");
+      process.env.JWT_SECRET)
+      
     res.status(201).json({
       user: {
         _id: userNameExist._id,
@@ -104,23 +101,6 @@ router.post("/signOut", async (req, res) => {
     res.status(201).json({message: 'sign out successfull'})
 });
 
-
-// to comment
-router.post("/comment", async (req, res) => {
-  const { comment, bookId } = req.body;
-  try {
-    const newComment = await BOOKES.findByIdAndUpdate(bookId, {
-      $push: { comments: comment },
-    });
-    res.status(200).json(newComment);
-    console.log(newComment);
-    console.log(comment);
-    console.log(bookId);
-    } catch (err) {
-      res.status(500).json(err);
-      console.log(err);
-      }
-      });
 
       
 

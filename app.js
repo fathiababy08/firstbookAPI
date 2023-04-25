@@ -33,9 +33,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bookRouters);
 app.use(customerRouters);
-app.get("/", auth, (req, res) => {
-  console.log(req.user);
-  res.send("auth worked");
+app.get("/showmeuser", auth, (req, res) => {
+  res.status(200).json({success: true, name: req.user.username})
 });
 
 // DB CONNECTION
