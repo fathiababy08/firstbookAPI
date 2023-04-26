@@ -12,17 +12,17 @@ router.post("/signUp", async (req, res) => {
   try {
     // check for input fields
     if (!userName && !email && !password) {
-      return res.json({ message: "please fill all the fields" });
+      return res.status(400).json({ message: "please fill all the fields" });
     }
     // check for already existing email
     const emailExist = await customer.findOne({ email });
     if (emailExist) {
-      return res.json({ message: "email already exists" });
+      return res.status(400).json({ message: "email already exists" });
     }
     // check for already existing userName
     const userNameExist = await customer.findOne({ userName });
     if (userNameExist) {
-      return res.json({ message: "userName already exists" });
+      return res.status(400).json({ message: "userName already exists" });
     }
 
     // hashing the password
@@ -46,7 +46,7 @@ router.post("/signUp", async (req, res) => {
     );
 
     // send the token to the client
-    res.status(201).json({ message:'sign up successful', newCustomer, token });
+    res.status(200).json({ message:'sign up successful', newCustomer, token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
@@ -58,19 +58,20 @@ router.post("/signIn", async (req, res) => {
   try {
     const { userName, password } = req.body;
     if (!userName && !password) {
-      return res.json({ message: "please fill all the fields" });
+      return res.status(400).json({ message: "please fill all the fields" });
     }
 
     const userNameExist = await customer.findOne({ userName });
     if (!userNameExist) {
-      return res.json({ message: "user not found, please register" });
+      return res.status(400).json({ message: "user not found, please register" });
     }
     const passwordCorrect = await bcrypt.compare(
       password,
       userNameExist.password
     );
+    console.log(passwordCorrect);
     if (!passwordCorrect) {
-      return res.json({ message: "Invalid username or password" });
+      return res.status(400).json({ message: "Invalid username or password" });
     }
     // create a jwt token
     const token = jwt.sign(
@@ -81,7 +82,7 @@ router.post("/signIn", async (req, res) => {
       },
       process.env.JWT_SECRET)
 
-    res.status(201).json({message: 'signIn sucessful',
+    res.status(200).json({message: 'signIn sucessful',
       user: {
         _id: userNameExist._id,
         userName: userNameExist.userName,
@@ -98,7 +99,7 @@ router.post("/signIn", async (req, res) => {
 // singOut route
 router.post("/signOut", async (req, res) => {
     const token = 'signOut'
-    res.status(201).json({message: 'sign out successfull'})
+    res.status(200).json({message: 'sign out successfull'})
 });
 
 
