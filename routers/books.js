@@ -4,9 +4,10 @@ const BOOKS = require("../model/bookesModel");
 const PURCHASE = require("../model/purchaseModel");
 const COMM = require("../model/commentModel");
 const CUST = require("../model/customerModel");
+const SUB = require("../model/subscribeModel")
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
-const auth = require('../middleware/auth')
+const auth = require("../middleware/auth");
 // protected route - all routes after popular, bestselling, purchased
 
 // to get all books
@@ -188,7 +189,7 @@ router.get("/comments", async (req, res) => {
 });
 
 // to rate a book
-router.patch("/update/:bookId",  async (req, res) => {
+router.patch("/update/:bookId", async (req, res) => {
   const { bookId } = req.params;
   try {
     // const newRating = await BOOKS.findByIdAndUpdate(bookId, {$push: { ratings: ratings },
@@ -198,10 +199,31 @@ router.patch("/update/:bookId",  async (req, res) => {
       new: true,
       runValidators: true,
     });
-    res.status(200).json({ message1: "Thank you for your rating", msg2: 'This has been bookmarked', newRating });
+    res
+      .status(200)
+      .json({
+        message1: "Thank you for your rating",
+        msg2: "This has been bookmarked",
+        newRating,
+      });
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
+// to subscribe to mail letters
+router.post("/subscribe", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      res.status(400).json({ message: "please enter email" });
+    }
+    const subscribe = await SUB.create({ email });
+    res.status(201).json({ success: 'subscription successfully created', data: subscribe });
+    } catch (err) {
+      res.status(500).json(err);
+      }
+      });
+
 
 module.exports = router;
