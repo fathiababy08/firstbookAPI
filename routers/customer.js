@@ -11,7 +11,7 @@ router.post("/signUp", async (req, res) => {
   const { userName, email, password } = req.body;
   try {
     // check for input fields
-    if (!userName || !email || !password) {
+    if (!userName && !email && !password) {
       return res.json({ message: "please fill all the fields" });
     }
     // check for already existing email
@@ -46,7 +46,7 @@ router.post("/signUp", async (req, res) => {
     );
 
     // send the token to the client
-    res.status(201).json({ newCustomer, token });
+    res.status(201).json({ message:'sign up successful', newCustomer, token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
@@ -57,7 +57,7 @@ router.post("/signUp", async (req, res) => {
 router.post("/signIn", async (req, res) => {
   try {
     const { userName, password } = req.body;
-    if (!userName || !password) {
+    if (!userName && !password) {
       return res.json({ message: "please fill all the fields" });
     }
 
@@ -80,8 +80,8 @@ router.post("/signIn", async (req, res) => {
         email: userNameExist.email,
       },
       process.env.JWT_SECRET)
-      
-    res.status(201).json({
+
+    res.status(201).json({message: 'signIn sucessful',
       user: {
         _id: userNameExist._id,
         userName: userNameExist.userName,

@@ -4,7 +4,6 @@ const subSchema = new Schema({
     email: {
         type: String,
         required: true,
-        ref: 'customer',
         unique: 'true'
     }
 })
